@@ -1,6 +1,7 @@
 mod currency;
 mod currency_code;
 mod currency_id;
+mod instrument;
 mod instrument_id;
 mod order;
 mod order_id;
@@ -11,6 +12,7 @@ mod price_value;
 pub use currency::Currency;
 pub use currency_code::CurrencyCode;
 pub use currency_id::CurrencyId;
+pub use instrument::Instrument;
 pub use instrument_id::InstrumentId;
 pub use order::Order;
 pub use order_id::OrderId;
