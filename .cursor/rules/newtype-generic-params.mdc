@@ -11,7 +11,7 @@ Domain newtypes in this workspace (`OrderId`, later `AccountId`, `InstrumentId`,
 ## Rule
 
 - Use a short **uppercase mnemonic of the wrapper / domain noun**, not `T`, `U`, `I`, or `Id`.
-- Prefer 2–4 letters that expand to the same words as the struct: `OrderId<OID>`, `AccountId<AID>`, `InstrumentId<IID>`, `CurrencyCode<CC>`, `CurrencyId<CID>`.
+- Prefer 2–4 letters that expand to the same words as the struct: `OrderId<OID>`, `AccountId<AID>`, `InstrumentId<IID>`, `CurrencyCode<CC>`, `CurrencyId<CID>`, `PriceValue<PV>`.
 - Keep that same parameter name in `impl` blocks, bounds, and related functions (`fn new(inner: OID)`).
 - If two wrappers appear together, each keeps its own mnemonic (`fn fill<OID, TID>(order: OrderId<OID>, trade: TradeId<TID>)`).
 
