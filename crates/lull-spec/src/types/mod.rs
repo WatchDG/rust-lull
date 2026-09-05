@@ -14,5 +14,6 @@ pub use lots::Lots;
 pub use money::{Money, MoneyCurrency, MoneyValue};
 pub use order::{
     Order, OrderId, OrderInstrument, OrderSize, OrderType, OrderTypeLimit, OrderTypeMarket,
+    PlaceOrder,
 };
 pub use quantity::Quantity;

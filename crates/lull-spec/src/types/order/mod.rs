@@ -40,3 +40,30 @@ impl<OID, OT, OI, OS> Order<OID, OT, OI, OS> {
         }
     }
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct PlaceOrder<OID, OT, OI, OS> {
+    pub id: Option<OrderId<OID>>,
+    pub side: OrderSide,
+    pub r#type: OrderType<OT>,
+    pub instrument: OrderInstrument<OI>,
+    pub size: OrderSize<OS>,
+}
+
+impl<OID, OT, OI, OS> PlaceOrder<OID, OT, OI, OS> {
+    pub fn new(
+        id: Option<OrderId<OID>>,
+        side: OrderSide,
+        r#type: OrderType<OT>,
+        instrument: OrderInstrument<OI>,
+        size: OrderSize<OS>,
+    ) -> Self {
+        Self {
+            id,
+            side,
+            r#type,
+            instrument,
+            size,
+        }
+    }
+}

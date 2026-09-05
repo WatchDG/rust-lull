@@ -4,6 +4,7 @@ mod order_size;
 mod order_type;
 mod order_type_limit;
 mod order_type_market;
+mod place_order;
 
 use std::collections::HashSet;
 
