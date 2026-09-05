@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use lull_spec::enums::{InstrumentRef, OrderSide, OrderSizeRef};
 use lull_spec::types::{InstrumentId, Order, OrderId, OrderInstrument, OrderSize, Quantity};
 
-type TestOrder = Order<String, InstrumentRef<String>, OrderSizeRef<i64>>;
+type TestOrder = Order<String, InstrumentRef<String>, OrderSizeRef<i64, i64>>;
 
 fn order(id: &str, side: OrderSide, instrument_id: &str, qty: i64) -> TestOrder {
     Order::new(

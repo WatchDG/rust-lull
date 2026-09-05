@@ -3,6 +3,7 @@ mod currency_code;
 mod currency_id;
 mod instrument;
 mod instrument_id;
+mod lots;
 mod money;
 mod money_currency;
 mod money_value;

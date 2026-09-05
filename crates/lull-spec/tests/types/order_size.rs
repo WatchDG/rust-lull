@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 
 use lull_spec::enums::OrderSizeRef;
-use lull_spec::types::{OrderSize, Quantity};
+use lull_spec::types::{Lots, OrderSize, Quantity};
 
-type TestOrderSize = OrderSize<OrderSizeRef<i64>>;
+type TestOrderSize = OrderSize<OrderSizeRef<i64, i64>>;
 
 #[test]
 fn equal_sizes_are_equal() {
@@ -37,5 +37,6 @@ fn equal_sizes_hash_to_the_same_bucket() {
     sizes.insert(OrderSize::new(OrderSizeRef::Quantity(Quantity::new(
         101_i64,
     ))));
-    assert_eq!(sizes.len(), 2);
+    sizes.insert(OrderSize::new(OrderSizeRef::Lots(Lots::new(10_i64))));
+    assert_eq!(sizes.len(), 3);
 }
