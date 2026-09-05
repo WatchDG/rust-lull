@@ -1,3 +1,4 @@
+mod account;
 mod currency;
 mod date_time;
 mod instrument;

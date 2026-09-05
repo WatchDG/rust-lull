@@ -1,3 +1,4 @@
+pub mod account;
 pub mod currency;
 pub mod instrument;
 pub mod money;
@@ -7,6 +8,7 @@ mod date_time;
 mod lots;
 mod quantity;
 
+pub use account::AccountId;
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;
 pub use instrument::{Instrument, InstrumentId};
