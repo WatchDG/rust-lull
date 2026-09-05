@@ -1,5 +1,8 @@
-use super::currency_code::CurrencyCode;
-use super::currency_id::CurrencyId;
+mod currency_code;
+mod currency_id;
+
+pub use currency_code::CurrencyCode;
+pub use currency_id::CurrencyId;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Currency<CID, CC> {

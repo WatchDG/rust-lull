@@ -1,4 +1,6 @@
-use super::instrument_id::InstrumentId;
+mod instrument_id;
+
+pub use instrument_id::InstrumentId;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Instrument<IID> {

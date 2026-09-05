@@ -1,8 +1,12 @@
-use crate::enums::OrderSide;
+mod order_id;
+mod order_instrument;
+mod order_size;
 
-use super::order_id::OrderId;
-use super::order_instrument::OrderInstrument;
-use super::order_size::OrderSize;
+pub use order_id::OrderId;
+pub use order_instrument::OrderInstrument;
+pub use order_size::OrderSize;
+
+use crate::enums::OrderSide;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Order<OID, OI, OS> {

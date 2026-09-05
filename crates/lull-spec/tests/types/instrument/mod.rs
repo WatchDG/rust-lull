@@ -1,3 +1,5 @@
+mod instrument_id;
+
 use std::collections::HashSet;
 
 use lull_spec::types::{Instrument, InstrumentId};

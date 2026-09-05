@@ -1,3 +1,6 @@
+mod money_currency;
+mod money_value;
+
 use std::collections::HashSet;
 
 use lull_spec::enums::CurrencyRef;

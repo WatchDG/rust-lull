@@ -1,5 +1,8 @@
-use super::money_currency::MoneyCurrency;
-use super::money_value::MoneyValue;
+mod money_currency;
+mod money_value;
+
+pub use money_currency::MoneyCurrency;
+pub use money_value::MoneyValue;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Money<MV, MC> {

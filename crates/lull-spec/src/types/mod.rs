@@ -1,29 +1,14 @@
-mod currency;
-mod currency_code;
-mod currency_id;
-mod instrument;
-mod instrument_id;
+pub mod currency;
+pub mod instrument;
+pub mod money;
+pub mod order;
+
 mod lots;
-mod money;
-mod money_currency;
-mod money_value;
-mod order;
-mod order_id;
-mod order_instrument;
-mod order_size;
 mod quantity;
 
-pub use currency::Currency;
-pub use currency_code::CurrencyCode;
-pub use currency_id::CurrencyId;
-pub use instrument::Instrument;
-pub use instrument_id::InstrumentId;
+pub use currency::{Currency, CurrencyCode, CurrencyId};
+pub use instrument::{Instrument, InstrumentId};
 pub use lots::Lots;
-pub use money::Money;
-pub use money_currency::MoneyCurrency;
-pub use money_value::MoneyValue;
-pub use order::Order;
-pub use order_id::OrderId;
-pub use order_instrument::OrderInstrument;
-pub use order_size::OrderSize;
+pub use money::{Money, MoneyCurrency, MoneyValue};
+pub use order::{Order, OrderId, OrderInstrument, OrderSize};
 pub use quantity::Quantity;

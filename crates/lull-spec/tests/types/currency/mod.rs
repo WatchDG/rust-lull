@@ -1,3 +1,6 @@
+mod currency_code;
+mod currency_id;
+
 use std::collections::HashSet;
 
 use lull_spec::types::{Currency, CurrencyCode, CurrencyId};
