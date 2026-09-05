@@ -1,5 +1,5 @@
 use lull_spec::enums::{CurrencyRef, InstrumentRef, OrderSide, OrderSizeRef, OrderTypeRef};
-use lull_spec::traits::TradeExecuteEngine;
+use lull_spec::traits::ExecuteEngine;
 use lull_spec::types::{
     CurrencyCode, InstrumentId, Money, MoneyCurrency, MoneyValue, Order, OrderId, OrderInstrument,
     OrderSize, OrderType, OrderTypeLimit, Quantity,
@@ -13,7 +13,7 @@ struct RecordingEngine {
     cancelled: Vec<OrderId<String>>,
 }
 
-impl TradeExecuteEngine<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef<i64, i64>>
+impl ExecuteEngine<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef<i64, i64>>
     for RecordingEngine
 {
     type Error = ();

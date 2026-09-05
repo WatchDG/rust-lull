@@ -1,6 +1,6 @@
 use crate::types::{Order, OrderId};
 
-pub trait TradeExecuteEngine<OID, OT, OI, OS> {
+pub trait ExecuteEngine<OID, OT, OI, OS> {
     type Error;
 
     fn place_order(&mut self, order: Order<OID, OT, OI, OS>) -> Result<(), Self::Error>;
