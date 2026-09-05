@@ -16,4 +16,4 @@ Cargo workspace for lull: abstract engine contracts, a wire protocol, derive mac
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
 
-Copyright 2026 Baranov Grigory Vladimirovich (WatchDG).
+Copyright 2026 Baranov Grigoriy Vladimirovich (WatchDG).
