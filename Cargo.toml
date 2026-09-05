@@ -15,6 +15,7 @@ readme = "README.md"
 
 [workspace.dependencies]
 lull-spec = { path = "crates/lull-spec", version = "0.1.0" }
+lull-core = { path = "crates/lull-core", version = "0.1.0" }
 lull-protocol = { path = "crates/lull-protocol", version = "0.1.0" }
 lull-derive = { path = "crates/lull-derive", version = "0.1.0" }
 lull-engine = { path = "crates/lull-engine", version = "0.1.0" }

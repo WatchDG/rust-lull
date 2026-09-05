@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "lull-core"
+version = "0.1.0"
+dependencies = [
+ "lull-spec",
+]
+
+[[package]]
 name = "lull-derive"
 version = "0.1.0"
 
