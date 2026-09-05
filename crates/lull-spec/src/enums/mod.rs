@@ -1,11 +1,8 @@
-mod currency_ref;
-mod instrument_ref;
-mod order_ref;
 mod order_type;
 mod side;
 
-pub use currency_ref::CurrencyRef;
-pub use instrument_ref::InstrumentRef;
-pub use order_ref::OrderRef;
+pub mod refs;
+
 pub use order_type::OrderType;
+pub use refs::{CurrencyRef, InstrumentRef, OrderRef};
 pub use side::Side;
