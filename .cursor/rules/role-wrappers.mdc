@@ -1,0 +1,42 @@
+---
+description: Role wrappers (OrderInstrument, OrderSize, …) hold a concrete type or a *Ref enum
+globs: **/*.rs
+alwaysApply: false
+---
+
+# Role wrappers vs refs
+
+A composite (`Order`, `Money`, …) does **not** take `Instrument` or `InstrumentRef` as a field type. It takes a **role wrapper**: a thin generic newtype named for the field's role (`OrderInstrument<OI>`, `OrderSize<OS>`, `MoneyCurrency<MC>`).
+
+The wrapper's parameter is the payload. That payload is **either**:
+
+1. A **concrete** domain type (`Instrument<IID>`, `Quantity<QTY>`, `Currency<CID, CC>`, …), when the value is fully known.
+2. A **`*Ref` enum** from `crates/lull-spec/src/enums/refs/`, when the value is identified one of several ways.
+
+`*Ref` enums already collapse those ways (`InstrumentRef::Id`, `CurrencyRef::Id` / `Code`, `OrderSizeRef::Quantity`, …). The wrapper stays the same either way; only the type argument changes.
+
+```rust
+// BAD — Order is coupled to one representation of "instrument"
+pub struct Order<IID> {
+    pub instrument: Instrument<IID>,
+}
+
+// BAD — Order is coupled to the ref enum; a concrete Instrument cannot be the field
+pub struct Order<IID> {
+    pub instrument: InstrumentRef<IID>,
+}
+
+// GOOD — role wrapper; payload is Instrument or InstrumentRef (or another inner type)
+pub struct OrderInstrument<OI>(OI);
+pub struct Order<OID, OI> {
+    pub instrument: OrderInstrument<OI>,
+}
+
+// call sites
+OrderInstrument::new(instrument);
+OrderInstrument::new(InstrumentRef::Id(id));
+```
+
+- Put new `*Ref` enums under `src/enums/refs/`, not next to `Side` / `OrderType`.
+- Do not skip the wrapper to "save" a type parameter: the wrapper is the stable field type.
+- Keep the wrapper's generic mnemonic from the wrapper name (`OI`, `OS`, `MC`); inner `*Ref` / newtypes keep their own (`IID`, `QTY`, …).
