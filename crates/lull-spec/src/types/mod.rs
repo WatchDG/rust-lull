@@ -11,7 +11,7 @@ mod quantity;
 pub use account::{Account, AccountId, AccountName};
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;
-pub use instrument::{Instrument, InstrumentId};
+pub use instrument::{Instrument, InstrumentId, InstrumentName};
 pub use lots::Lots;
 pub use money::{Money, MoneyCurrency, MoneyValue};
 pub use order::{
