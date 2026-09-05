@@ -1,5 +1,5 @@
 use lull_core::{
-    CorePipelineBuilder, FnStageFactory, PipelineError, PipelineStage, Stage, StageId,
+    CorePipelineBuilder, EngineType, FnStageFactory, PipelineError, PipelineStage, Stage, StageId,
 };
 use lull_spec::enums::TradeSignal;
 
@@ -27,25 +27,28 @@ fn emit_buy(_: &()) -> Result<EmitBuy, ()> {
     Ok(EmitBuy)
 }
 
-fn builder() -> CorePipelineBuilder<&'static str, TradeSignal, (), ()> {
+fn builder() -> CorePipelineBuilder<TradeSignal, (), ()> {
     CorePipelineBuilder::new()
         .register(
-            StageId::new("strategy"),
+            StageId::new(EngineType::Strategy),
             Box::new(FnStageFactory(emit_buy)),
         )
         .register(
-            StageId::new("execution"),
+            StageId::new(EngineType::Execution),
             Box::new(FnStageFactory(pass_through)),
         )
-        .register(StageId::new("risk"), Box::new(FnStageFactory(pass_through)))
+        .register(
+            StageId::new(EngineType::Risk),
+            Box::new(FnStageFactory(pass_through)),
+        )
 }
 
 #[test]
 fn executes_stages_in_list_order() {
     let pipeline = builder()
-        .stage(PipelineStage::new(StageId::new("strategy"), ()))
-        .stage(PipelineStage::new(StageId::new("execution"), ()))
-        .stage(PipelineStage::new(StageId::new("risk"), ()))
+        .stage(PipelineStage::new(StageId::new(EngineType::Strategy), ()))
+        .stage(PipelineStage::new(StageId::new(EngineType::Execution), ()))
+        .stage(PipelineStage::new(StageId::new(EngineType::Risk), ()))
         .build()
         .unwrap();
     assert_eq!(pipeline.len(), 3);
@@ -79,15 +82,18 @@ fn stage_error_keeps_the_stage_id() {
     }
 
     let pipeline = CorePipelineBuilder::new()
-        .register(StageId::new("risk"), Box::new(FnStageFactory(boom)))
-        .stage(PipelineStage::new(StageId::new("risk"), ()))
+        .register(
+            StageId::new(EngineType::Risk),
+            Box::new(FnStageFactory(boom)),
+        )
+        .stage(PipelineStage::new(StageId::new(EngineType::Risk), ()))
         .build()
         .unwrap();
     let error = pipeline.execute(TradeSignal::Buy).unwrap_err();
     assert_eq!(
         error,
         PipelineError::Stage {
-            id: StageId::new("risk"),
+            id: StageId::new(EngineType::Risk),
             source: "blocked",
         }
     );

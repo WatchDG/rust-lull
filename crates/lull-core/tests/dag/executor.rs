@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use lull_core::{CoreDAGBuilder, Edge, ExecuteError, FnFactory, Node, NodeHandler, NodeId};
-use lull_spec::enums::TradeSignal;
+use lull_spec::enums::{EngineType, TradeSignal};
 
 struct PassThrough;
 
@@ -21,9 +21,9 @@ impl NodeHandler<TradeSignal, ()> for Emit {
 
 fn node(
     id: &'static str,
-    r#type: &'static str,
+    r#type: EngineType,
     implementation: &'static str,
-) -> Node<&'static str, &'static str, &'static str, ()> {
+) -> Node<&'static str, &'static str, ()> {
     Node::new(NodeId::new(id), r#type, implementation, ())
 }
 
@@ -39,17 +39,17 @@ fn pass_through(_: &()) -> Result<PassThrough, ()> {
     Ok(PassThrough)
 }
 
-fn builder() -> CoreDAGBuilder<&'static str, &'static str, &'static str, (), TradeSignal, ()> {
+fn builder() -> CoreDAGBuilder<&'static str, &'static str, (), TradeSignal, ()> {
     CoreDAGBuilder::new()
-        .register("StrategyEngine", "momentum", Box::new(FnFactory(emit_buy)))
+        .register(EngineType::Strategy, "momentum", Box::new(FnFactory(emit_buy)))
         .register(
-            "StrategyEngine",
+            EngineType::Strategy,
             "mean_reversion",
             Box::new(FnFactory(emit_sell)),
         )
-        .register("RiskEngine", "var_limit", Box::new(FnFactory(pass_through)))
+        .register(EngineType::Risk, "var_limit", Box::new(FnFactory(pass_through)))
         .register(
-            "ExecutionEngine",
+            EngineType::Execution,
             "binance_adapter",
             Box::new(FnFactory(pass_through)),
         )
@@ -58,10 +58,18 @@ fn builder() -> CoreDAGBuilder<&'static str, &'static str, &'static str, (), Tra
 #[test]
 fn executes_strategy_risk_execution_dag() {
     let dag = builder()
-        .node(node("strat_momentum", "StrategyEngine", "momentum"))
-        .node(node("strat_meanrev", "StrategyEngine", "mean_reversion"))
-        .node(node("risk", "RiskEngine", "var_limit"))
-        .node(node("exec_binance", "ExecutionEngine", "binance_adapter"))
+        .node(node("strat_momentum", EngineType::Strategy, "momentum"))
+        .node(node(
+            "strat_meanrev",
+            EngineType::Strategy,
+            "mean_reversion",
+        ))
+        .node(node("risk", EngineType::Risk, "var_limit"))
+        .node(node(
+            "exec_binance",
+            EngineType::Execution,
+            "binance_adapter",
+        ))
         .edge(Edge::new(
             NodeId::new("strat_momentum"),
             NodeId::new("risk"),
@@ -81,14 +89,14 @@ fn executes_strategy_risk_execution_dag() {
 #[test]
 fn unknown_implementation_is_a_registry_miss() {
     let dag = builder()
-        .node(node("only", "StrategyEngine", "missing_impl"))
+        .node(node("only", EngineType::Strategy, "missing_impl"))
         .build()
         .unwrap();
     let error = dag.execute(&HashMap::new()).unwrap_err();
     assert_eq!(
         error,
         ExecuteError::UnknownFactory {
-            r#type: "StrategyEngine",
+            r#type: EngineType::Strategy,
             implementation: "missing_impl",
         }
     );
@@ -97,7 +105,7 @@ fn unknown_implementation_is_a_registry_miss() {
 #[test]
 fn source_node_receives_seed_inputs() {
     let dag = builder()
-        .node(node("risk", "RiskEngine", "var_limit"))
+        .node(node("risk", EngineType::Risk, "var_limit"))
         .build()
         .unwrap();
     let mut seeds = HashMap::new();

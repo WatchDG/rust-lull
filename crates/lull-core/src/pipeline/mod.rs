@@ -1,7 +1,7 @@
 //! Linear stage chain (chain of responsibility).
 //!
-//! The flow is a list of stage names. A registry maps each name to a factory.
-//! The executor walks the list and calls `process` on each handler in order.
+//! The flow is a list of `EngineType` stages. A registry maps each type to a
+//! factory. The executor walks the list and calls `process` on each handler.
 
 mod error;
 mod executor;
@@ -14,19 +14,14 @@ pub use handler::{BoxedStage, BoxedStageFactory, FnStageFactory, Stage, StageFac
 pub use registry::StageRegistry;
 pub use stage::{PipelineStage, StageId};
 
-use std::hash::Hash;
-
 use executor::{execute, PreparedStage};
 
-pub struct CorePipelineBuilder<SID, M, SP, E> {
-    stages: Vec<PipelineStage<SID, SP>>,
-    registry: StageRegistry<SID, M, SP, E>,
+pub struct CorePipelineBuilder<M, SP, E> {
+    stages: Vec<PipelineStage<SP>>,
+    registry: StageRegistry<M, SP, E>,
 }
 
-impl<SID, M, SP, E> CorePipelineBuilder<SID, M, SP, E>
-where
-    SID: Clone + Eq + Hash,
-{
+impl<M, SP, E> CorePipelineBuilder<M, SP, E> {
     pub fn new() -> Self {
         Self {
             stages: Vec::new(),
@@ -34,20 +29,20 @@ where
         }
     }
 
-    pub fn stage(mut self, stage: PipelineStage<SID, SP>) -> Self {
+    pub fn stage(mut self, stage: PipelineStage<SP>) -> Self {
         self.stages.push(stage);
         self
     }
 
-    pub fn register(mut self, id: StageId<SID>, factory: BoxedStageFactory<M, SP, E>) -> Self {
+    pub fn register(mut self, id: StageId, factory: BoxedStageFactory<M, SP, E>) -> Self {
         self.registry.register(id, factory);
         self
     }
 
-    pub fn build(self) -> Result<CorePipeline<SID, M, SP, E>, PipelineError<SID, E>> {
+    pub fn build(self) -> Result<CorePipeline<M, SP, E>, PipelineError<E>> {
         for stage in &self.stages {
             if self.registry.get(&stage.id).is_none() {
-                return Err(PipelineError::UnknownStage(stage.id.clone()));
+                return Err(PipelineError::UnknownStage(stage.id));
             }
         }
         Ok(CorePipeline {
@@ -57,39 +52,33 @@ where
     }
 }
 
-impl<SID, M, SP, E> Default for CorePipelineBuilder<SID, M, SP, E>
-where
-    SID: Clone + Eq + Hash,
-{
+impl<M, SP, E> Default for CorePipelineBuilder<M, SP, E> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-pub struct CorePipeline<SID, M, SP, E> {
-    stages: Vec<PipelineStage<SID, SP>>,
-    registry: StageRegistry<SID, M, SP, E>,
+pub struct CorePipeline<M, SP, E> {
+    stages: Vec<PipelineStage<SP>>,
+    registry: StageRegistry<M, SP, E>,
 }
 
-impl<SID, M, SP, E> CorePipeline<SID, M, SP, E>
-where
-    SID: Clone + Eq + Hash,
-{
-    pub fn execute(&self, input: M) -> Result<M, PipelineError<SID, E>> {
+impl<M, SP, E> CorePipeline<M, SP, E> {
+    pub fn execute(&self, input: M) -> Result<M, PipelineError<E>> {
         let mut prepared = Vec::with_capacity(self.stages.len());
         for stage in &self.stages {
             let factory = self
                 .registry
                 .get(&stage.id)
-                .ok_or_else(|| PipelineError::UnknownStage(stage.id.clone()))?;
+                .ok_or(PipelineError::UnknownStage(stage.id))?;
             let handler = factory
                 .create(&stage.params)
                 .map_err(|source| PipelineError::Stage {
-                    id: stage.id.clone(),
+                    id: stage.id,
                     source,
                 })?;
             prepared.push(PreparedStage {
-                id: stage.id.clone(),
+                id: stage.id,
                 handler,
             });
         }

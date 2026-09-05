@@ -1,21 +1,22 @@
 use std::collections::{HashMap, VecDeque};
+use std::hash::Hash;
 
 use super::edge::Edge;
 use super::error::GraphError;
 use super::node::{Node, NodeId};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Graph<NID, ROLE, IMPL, NP> {
-    nodes: Vec<Node<NID, ROLE, IMPL, NP>>,
+pub struct Graph<NID, IMPL, NP> {
+    nodes: Vec<Node<NID, IMPL, NP>>,
     edges: Vec<Edge<NID>>,
 }
 
-impl<NID, ROLE, IMPL, NP> Graph<NID, ROLE, IMPL, NP>
+impl<NID, IMPL, NP> Graph<NID, IMPL, NP>
 where
-    NID: Clone + Eq + std::hash::Hash,
+    NID: Clone + Eq + Hash,
 {
     pub fn new(
-        nodes: Vec<Node<NID, ROLE, IMPL, NP>>,
+        nodes: Vec<Node<NID, IMPL, NP>>,
         edges: Vec<Edge<NID>>,
     ) -> Result<Self, GraphError<NID>> {
         let mut seen = HashMap::new();
@@ -35,7 +36,7 @@ where
         Ok(Self { nodes, edges })
     }
 
-    pub fn nodes(&self) -> &[Node<NID, ROLE, IMPL, NP>] {
+    pub fn nodes(&self) -> &[Node<NID, IMPL, NP>] {
         &self.nodes
     }
 
@@ -43,7 +44,7 @@ where
         &self.edges
     }
 
-    pub fn node(&self, id: &NodeId<NID>) -> Option<&Node<NID, ROLE, IMPL, NP>> {
+    pub fn node(&self, id: &NodeId<NID>) -> Option<&Node<NID, IMPL, NP>> {
         self.nodes.iter().find(|node| node.id == *id)
     }
 

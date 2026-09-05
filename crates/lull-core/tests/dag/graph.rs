@@ -1,7 +1,8 @@
 use lull_core::{Edge, Graph, GraphError, Node, NodeId};
+use lull_spec::enums::EngineType;
 
-fn node(id: &str) -> Node<&str, &str, &str, ()> {
-    Node::new(NodeId::new(id), "StrategyEngine", "identity", ())
+fn node(id: &str) -> Node<&str, &str, ()> {
+    Node::new(NodeId::new(id), EngineType::Strategy, "identity", ())
 }
 
 #[test]

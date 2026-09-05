@@ -1,3 +1,5 @@
+use lull_spec::enums::EngineType;
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct NodeId<NID>(NID);
 
@@ -8,15 +10,15 @@ impl<NID> NodeId<NID> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Node<NID, ROLE, IMPL, NP> {
+pub struct Node<NID, IMPL, NP> {
     pub id: NodeId<NID>,
-    pub r#type: ROLE,
+    pub r#type: EngineType,
     pub implementation: IMPL,
     pub params: NP,
 }
 
-impl<NID, ROLE, IMPL, NP> Node<NID, ROLE, IMPL, NP> {
-    pub fn new(id: NodeId<NID>, r#type: ROLE, implementation: IMPL, params: NP) -> Self {
+impl<NID, IMPL, NP> Node<NID, IMPL, NP> {
+    pub fn new(id: NodeId<NID>, r#type: EngineType, implementation: IMPL, params: NP) -> Self {
         Self {
             id,
             r#type,

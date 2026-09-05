@@ -8,15 +8,14 @@ use super::registry::Registry;
 
 pub type NodeOutputs<NID, M> = HashMap<NodeId<NID>, Vec<M>>;
 
-pub(crate) fn execute<NID, ROLE, IMPL, NP, M, E>(
-    graph: &Graph<NID, ROLE, IMPL, NP>,
-    registry: &Registry<ROLE, IMPL, M, NP, E>,
+pub(crate) fn execute<NID, IMPL, NP, M, E>(
+    graph: &Graph<NID, IMPL, NP>,
+    registry: &Registry<IMPL, M, NP, E>,
     seeds: &NodeOutputs<NID, M>,
     order: &[NodeId<NID>],
-) -> Result<NodeOutputs<NID, M>, ExecuteError<NID, ROLE, IMPL, E>>
+) -> Result<NodeOutputs<NID, M>, ExecuteError<NID, IMPL, E>>
 where
     NID: Clone + Eq + Hash,
-    ROLE: Clone + Eq + Hash,
     IMPL: Clone + Eq + Hash,
     M: Clone,
 {
@@ -37,9 +36,9 @@ where
         }
 
         let factory = registry
-            .get(&node.r#type, &node.implementation)
+            .get(node.r#type, &node.implementation)
             .ok_or_else(|| ExecuteError::UnknownFactory {
-                r#type: node.r#type.clone(),
+                r#type: node.r#type,
                 implementation: node.implementation.clone(),
             })?;
         let mut handler = factory

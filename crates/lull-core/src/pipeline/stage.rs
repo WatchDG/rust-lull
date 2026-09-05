@@ -1,20 +1,22 @@
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct StageId<SID>(SID);
+use lull_spec::enums::EngineType;
 
-impl<SID> StageId<SID> {
-    pub fn new(inner: SID) -> Self {
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct StageId(EngineType);
+
+impl StageId {
+    pub fn new(inner: EngineType) -> Self {
         Self(inner)
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct PipelineStage<SID, SP> {
-    pub id: StageId<SID>,
+pub struct PipelineStage<SP> {
+    pub id: StageId,
     pub params: SP,
 }
 
-impl<SID, SP> PipelineStage<SID, SP> {
-    pub fn new(id: StageId<SID>, params: SP) -> Self {
+impl<SP> PipelineStage<SP> {
+    pub fn new(id: StageId, params: SP) -> Self {
         Self { id, params }
     }
 }
