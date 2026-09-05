@@ -8,3 +8,4 @@ mod money_currency;
 mod money_value;
 mod order;
 mod order_id;
+mod order_instrument;

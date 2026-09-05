@@ -27,8 +27,7 @@ fn distinct_currencies_are_not_equal() {
 fn id_is_not_code() {
     let id: TestMoneyCurrency =
         MoneyCurrency::new(CurrencyRef::Id(CurrencyId::new(String::from("USD"))));
-    let code: TestMoneyCurrency =
-        MoneyCurrency::new(CurrencyRef::Code(CurrencyCode::new(*b"USD")));
+    let code: TestMoneyCurrency = MoneyCurrency::new(CurrencyRef::Code(CurrencyCode::new(*b"USD")));
     assert_ne!(id, code);
 }
 
