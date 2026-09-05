@@ -2,6 +2,7 @@ mod currency;
 mod currency_code;
 mod currency_id;
 mod instrument_id;
+mod order;
 mod order_id;
 mod price;
 mod price_currency;
