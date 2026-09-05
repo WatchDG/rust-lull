@@ -9,6 +9,7 @@ mod money_value;
 mod order;
 mod order_id;
 mod order_instrument;
+mod order_size;
 mod quantity;
 
 pub use currency::Currency;
@@ -22,4 +23,5 @@ pub use money_value::MoneyValue;
 pub use order::Order;
 pub use order_id::OrderId;
 pub use order_instrument::OrderInstrument;
+pub use order_size::OrderSize;
 pub use quantity::Quantity;
