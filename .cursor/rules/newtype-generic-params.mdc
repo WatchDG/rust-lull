@@ -1,0 +1,34 @@
+---
+description: Name newtype generic parameters after the domain they wrap, not T/U
+globs: **/*.rs
+alwaysApply: false
+---
+
+# Newtype generic parameter names
+
+Domain newtypes in this workspace (`OrderId`, later `AccountId`, `InstrumentId`, …) are thin wrappers. The type-parameter name **must read as the wrapped value**, so call sites stay meaningful when several wrappers share a generic context.
+
+## Rule
+
+- Use a short **uppercase mnemonic of the wrapper / domain noun**, not `T`, `U`, `I`, or `Id`.
+- Prefer 2–4 letters that expand to the same words as the struct: `OrderId<OID>`, `AccountId<AID>`, `InstrumentId<IID>`.
+- Keep that same parameter name in `impl` blocks, bounds, and related functions (`fn new(inner: OID)`).
+- If two wrappers appear together, each keeps its own mnemonic (`fn fill<OID, TID>(order: OrderId<OID>, trade: TradeId<TID>)`).
+
+## Examples
+
+```rust
+// BAD — the parameter is just "some T"; the wrapper's meaning disappears
+pub struct OrderId<T>(T);
+impl<T> OrderId<T> {
+    pub fn new(inner: T) -> Self { Self(inner) }
+}
+
+// GOOD — OID is the order identifier payload
+pub struct OrderId<OID>(OID);
+impl<OID> OrderId<OID> {
+    pub fn new(inner: OID) -> Self { Self(inner) }
+}
+```
+
+Do not invent a second, unrelated abbreviation for the same wrapper in another module.
