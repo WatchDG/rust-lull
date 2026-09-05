@@ -1,3 +1,4 @@
+mod currency;
 mod currency_code;
 mod currency_id;
 mod instrument;
