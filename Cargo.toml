@@ -1,0 +1,20 @@
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "Apache-2.0"
+license-file = "LICENSE"
+authors = ["Baranov Grigory Vladimirovich (WatchDG)"]
+repository = "https://github.com/WatchDG/rust-lull"
+homepage = "https://github.com/WatchDG/rust-lull"
+readme = "README.md"
+
+[workspace.dependencies]
+lull-spec = { path = "crates/lull-spec", version = "0.1.0" }
+lull-protocol = { path = "crates/lull-protocol", version = "0.1.0" }
+lull-derive = { path = "crates/lull-derive", version = "0.1.0" }
+lull-engine = { path = "crates/lull-engine", version = "0.1.0" }

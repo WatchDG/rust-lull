@@ -1,0 +1,65 @@
+---
+description: Conventional Commits 1.0.0 for all git commit messages in this repo
+alwaysApply: true
+---
+
+# Conventional Commits
+
+When creating a git commit, the message MUST follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/#specification).
+
+```
+<type>[optional scope][optional !]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+- Type, OPTIONAL scope, OPTIONAL `!`, then REQUIRED `: ` and description.
+- Description: imperative, concise, English (this repo's commit language).
+- Body (OPTIONAL): one blank line after the description; free-form paragraphs.
+- Footers (OPTIONAL): one blank line after the body; `Token: value` or `Token #value`. Tokens use `-` instead of spaces. `BREAKING CHANGE` (or `BREAKING-CHANGE`) is the exception and MUST be uppercase.
+
+## Types
+
+| Type | When |
+| --- | --- |
+| `feat` | New user-facing capability (MINOR) |
+| `fix` | Bug fix (PATCH) |
+| `docs` | Documentation only |
+| `style` | Formatting; no behavior change |
+| `refactor` | Restructure; no feat or fix |
+| `perf` | Performance |
+| `test` | Tests only |
+| `build` | Cargo/workspace/deps |
+| `ci` | CI |
+| `chore` | Maintenance that is none of the above |
+
+Prefer one type per commit. Split mixed work into multiple commits when possible.
+
+## Scope
+
+OPTIONAL noun in parentheses. In this workspace use a crate or `workspace`:
+
+`feat(lull-spec):`, `fix(lull-protocol):`, `feat(lull-derive):`, `feat(lull-engine):`, `build(workspace):`
+
+## Breaking changes
+
+MUST be marked with `!` before `:` and/or a footer:
+
+```
+feat(lull-spec)!: rename Engine::step to process
+
+BREAKING CHANGE: `Engine::step` is now `Engine::process`.
+```
+
+`!` in the prefix is enough; if `!` is used, a `BREAKING CHANGE:` footer MAY be omitted and the description SHALL describe the break.
+
+## Examples
+
+```
+feat(lull-engine): add EchoEngine
+fix(lull-protocol): reject trailing bytes after a frame
+docs: document crate layout in README
+build(workspace): share crate versions via workspace.dependencies
+```
