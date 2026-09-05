@@ -6,5 +6,5 @@ pub mod refs;
 
 pub use engine_type::EngineType;
 pub use order_side::OrderSide;
-pub use refs::{CurrencyRef, InstrumentRef, OrderRef, OrderSizeRef, OrderTypeRef};
+pub use refs::{AccountRef, CurrencyRef, InstrumentRef, OrderRef, OrderSizeRef, OrderTypeRef};
 pub use trade_signal::TradeSignal;
