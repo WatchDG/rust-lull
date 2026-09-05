@@ -12,5 +12,7 @@ pub use date_time::DateTime;
 pub use instrument::{Instrument, InstrumentId};
 pub use lots::Lots;
 pub use money::{Money, MoneyCurrency, MoneyValue};
-pub use order::{Order, OrderId, OrderInstrument, OrderSize};
+pub use order::{
+    Order, OrderId, OrderInstrument, OrderSize, OrderType, OrderTypeLimit, OrderTypeMarket,
+};
 pub use quantity::Quantity;
