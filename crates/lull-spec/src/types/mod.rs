@@ -1,4 +1,3 @@
-mod currency;
 mod currency_code;
 mod currency_id;
 mod instrument;
@@ -9,7 +8,6 @@ mod money_value;
 mod order;
 mod order_id;
 
-pub use currency::Currency;
 pub use currency_code::CurrencyCode;
 pub use currency_id::CurrencyId;
 pub use instrument::Instrument;

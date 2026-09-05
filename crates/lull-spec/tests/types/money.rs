@@ -1,13 +1,14 @@
 use std::collections::HashSet;
 
-use lull_spec::types::{Currency, CurrencyCode, CurrencyId, Money, MoneyCurrency, MoneyValue};
+use lull_spec::enums::CurrencyRef;
+use lull_spec::types::{CurrencyCode, CurrencyId, Money, MoneyCurrency, MoneyValue};
 
-type TestMoney = Money<i64, Currency<String, [u8; 3]>>;
+type TestMoney = Money<i64, CurrencyRef<String, [u8; 3]>>;
 
 fn usd(value: i64) -> TestMoney {
     Money::new(
         MoneyValue::new(value),
-        MoneyCurrency::new(Currency::Code(CurrencyCode::new(*b"USD"))),
+        MoneyCurrency::new(CurrencyRef::Code(CurrencyCode::new(*b"USD"))),
     )
 }
 
@@ -26,7 +27,7 @@ fn distinct_currencies_are_not_equal() {
     let usd_money = usd(100);
     let eur_money = Money::new(
         MoneyValue::new(100_i64),
-        MoneyCurrency::new(Currency::Code(CurrencyCode::new(*b"EUR"))),
+        MoneyCurrency::new(CurrencyRef::Code(CurrencyCode::new(*b"EUR"))),
     );
     assert_ne!(usd_money, eur_money);
 }
@@ -35,7 +36,7 @@ fn distinct_currencies_are_not_equal() {
 fn id_currency_is_not_code_currency() {
     let by_id = Money::new(
         MoneyValue::new(100_i64),
-        MoneyCurrency::new(Currency::Id(CurrencyId::new(String::from("USD")))),
+        MoneyCurrency::new(CurrencyRef::Id(CurrencyId::new(String::from("USD")))),
     );
     assert_ne!(by_id, usd(100));
 }
@@ -54,7 +55,7 @@ fn equal_amounts_hash_to_the_same_bucket() {
     amounts.insert(usd(101));
     amounts.insert(Money::new(
         MoneyValue::new(100_i64),
-        MoneyCurrency::new(Currency::Code(CurrencyCode::new(*b"EUR"))),
+        MoneyCurrency::new(CurrencyRef::Code(CurrencyCode::new(*b"EUR"))),
     ));
     assert_eq!(amounts.len(), 3);
 }
