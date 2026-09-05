@@ -8,7 +8,7 @@ mod date_time;
 mod lots;
 mod quantity;
 
-pub use account::AccountId;
+pub use account::{Account, AccountId, AccountName};
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;
 pub use instrument::{Instrument, InstrumentId};
