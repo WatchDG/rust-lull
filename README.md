@@ -7,7 +7,7 @@ Cargo workspace for lull: abstract engine contracts, a wire protocol, derive mac
 | Crate | Role |
 | --- | --- |
 | [`lull-spec`](crates/lull-spec) | Abstract types and traits. No engine implementations. |
-| [`lull-core`](crates/lull-core) | DAG graph, engine registry, and topological executor. |
+| [`lull-core`](crates/lull-core) | DAG and linear pipeline executors plus engine registries. |
 | [`lull-protocol`](crates/lull-protocol) | Wire protocol messages and codec traits. |
 | [`lull-derive`](crates/lull-derive) | Derive macros for `lull-spec` traits. |
 | [`lull-engine`](crates/lull-engine) | Concrete engines that implement `lull-spec`. |

@@ -1,6 +1,6 @@
 [package]
 name = "lull-core"
-description = "DAG executor, node graph, and engine registry for Lull."
+description = "DAG and linear pipeline executors and engine registries for Lull."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
