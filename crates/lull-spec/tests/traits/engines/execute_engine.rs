@@ -1,15 +1,16 @@
 use lull_spec::enums::{CurrencyRef, InstrumentRef, OrderSide, OrderSizeRef, OrderTypeRef};
 use lull_spec::traits::ExecuteEngine;
 use lull_spec::types::{
-    CurrencyCode, InstrumentId, Money, MoneyCurrency, MoneyValue, Order, OrderId, OrderInstrument,
-    OrderSize, OrderType, OrderTypeLimit, Quantity,
+    CurrencyCode, InstrumentId, Money, MoneyCurrency, MoneyValue, OrderId, OrderInstrument,
+    OrderSize, OrderType, OrderTypeLimit, PlaceOrder, Quantity,
 };
 
 type TestOrderTypeRef = OrderTypeRef<i64, CurrencyRef<String, [u8; 3]>>;
-type TestOrder = Order<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef<i64, i64>>;
+type TestPlaceOrder =
+    PlaceOrder<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef<i64, i64>>;
 
 struct RecordingEngine {
-    placed: Vec<TestOrder>,
+    placed: Vec<TestPlaceOrder>,
     cancelled: Vec<OrderId<String>>,
 }
 
@@ -18,7 +19,7 @@ impl ExecuteEngine<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef
 {
     type Error = ();
 
-    fn place_order(&mut self, order: TestOrder) -> Result<(), Self::Error> {
+    fn place_order(&mut self, order: TestPlaceOrder) -> Result<(), Self::Error> {
         self.placed.push(order);
         Ok(())
     }
@@ -29,9 +30,9 @@ impl ExecuteEngine<String, TestOrderTypeRef, InstrumentRef<String>, OrderSizeRef
     }
 }
 
-fn sample_order(id: &str) -> TestOrder {
-    Order::new(
-        OrderId::new(String::from(id)),
+fn sample_place_order(id: Option<&str>) -> TestPlaceOrder {
+    PlaceOrder::new(
+        id.map(|id| OrderId::new(String::from(id))),
         OrderSide::Buy,
         OrderType::new(OrderTypeRef::Limit(OrderTypeLimit::new(Money::new(
             MoneyValue::new(100_i64),
@@ -43,13 +44,13 @@ fn sample_order(id: &str) -> TestOrder {
 }
 
 #[test]
-fn place_order_accepts_an_order() {
+fn place_order_accepts_a_place_order() {
     let mut engine = RecordingEngine {
         placed: Vec::new(),
         cancelled: Vec::new(),
     };
-    engine.place_order(sample_order("ord-1")).unwrap();
-    assert_eq!(engine.placed, vec![sample_order("ord-1")]);
+    engine.place_order(sample_place_order(Some("ord-1"))).unwrap();
+    assert_eq!(engine.placed, vec![sample_place_order(Some("ord-1"))]);
 }
 
 #[test]
