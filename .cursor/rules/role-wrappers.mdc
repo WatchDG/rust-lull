@@ -37,6 +37,6 @@ OrderInstrument::new(instrument);
 OrderInstrument::new(InstrumentRef::Id(id));
 ```
 
-- Put new `*Ref` enums under `src/enums/refs/`, not next to `Side` / `OrderType`.
+- Put new `*Ref` enums under `src/enums/refs/`, not next to `OrderSide` / `OrderType`.
 - Do not skip the wrapper to "save" a type parameter: the wrapper is the stable field type.
 - Keep the wrapper's generic mnemonic from the wrapper name (`OI`, `OS`, `MC`); inner `*Ref` / newtypes keep their own (`IID`, `QTY`, …).

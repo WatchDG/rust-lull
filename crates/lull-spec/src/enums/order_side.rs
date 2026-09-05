@@ -1,5 +1,5 @@
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum Side {
+pub enum OrderSide {
     Buy,
     Sell,
 }
