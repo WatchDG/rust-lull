@@ -1,4 +1,5 @@
 pub mod account;
+pub mod candlestick;
 pub mod currency;
 pub mod instrument;
 pub mod money;
@@ -9,6 +10,7 @@ mod lots;
 mod quantity;
 
 pub use account::{Account, AccountId, AccountName};
+pub use candlestick::{Candlestick, CandlestickId};
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;
 pub use instrument::{Instrument, InstrumentId, InstrumentName, InstrumentTicker};

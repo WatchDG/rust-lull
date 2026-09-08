@@ -1,4 +1,5 @@
 mod account;
+mod candlestick;
 mod currency;
 mod date_time;
 mod instrument;
