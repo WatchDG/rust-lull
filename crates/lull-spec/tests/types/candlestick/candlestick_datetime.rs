@@ -6,19 +6,15 @@ type TestCandlestickDateTime = CandlestickDateTime<DateTime<i64>>;
 
 #[test]
 fn equal_datetimes_are_equal() {
-    let left: TestCandlestickDateTime =
-        CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
-    let right: TestCandlestickDateTime =
-        CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
+    let left: TestCandlestickDateTime = CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
+    let right: TestCandlestickDateTime = CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
     assert_eq!(left, right);
 }
 
 #[test]
 fn distinct_datetimes_are_not_equal() {
-    let left: TestCandlestickDateTime =
-        CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
-    let right: TestCandlestickDateTime =
-        CandlestickDateTime::new(DateTime::new(1_700_000_300_i64));
+    let left: TestCandlestickDateTime = CandlestickDateTime::new(DateTime::new(1_700_000_000_i64));
+    let right: TestCandlestickDateTime = CandlestickDateTime::new(DateTime::new(1_700_000_300_i64));
     assert_ne!(left, right);
 }
 

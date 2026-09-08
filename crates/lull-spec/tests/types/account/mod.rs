@@ -17,7 +17,10 @@ fn account(id: &str, name: Option<&str>) -> TestAccount {
 #[test]
 fn equal_fields_are_equal_accounts() {
     assert_eq!(account("acc-1", None), account("acc-1", None));
-    assert_eq!(account("acc-1", Some("main")), account("acc-1", Some("main")));
+    assert_eq!(
+        account("acc-1", Some("main")),
+        account("acc-1", Some("main"))
+    );
 }
 
 #[test]

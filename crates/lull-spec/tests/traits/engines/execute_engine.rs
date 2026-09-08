@@ -49,7 +49,9 @@ fn place_order_accepts_a_place_order() {
         placed: Vec::new(),
         cancelled: Vec::new(),
     };
-    engine.place_order(sample_place_order(Some("ord-1"))).unwrap();
+    engine
+        .place_order(sample_place_order(Some("ord-1")))
+        .unwrap();
     assert_eq!(engine.placed, vec![sample_place_order(Some("ord-1"))]);
 }
 

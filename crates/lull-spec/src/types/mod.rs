@@ -12,6 +12,7 @@ mod quantity;
 pub use account::{Account, AccountId, AccountName};
 pub use candlestick::{
     Candlestick, CandlestickDateTime, CandlestickId, CandlestickInstrument, CandlestickInterval,
+    CandlestickPrice, CandlestickVolume,
 };
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;

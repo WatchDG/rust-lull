@@ -130,7 +130,13 @@ fn distinct_sides_are_not_equal_place_orders() {
 fn distinct_types_are_not_equal_place_orders() {
     assert_ne!(
         place_order(None, OrderSide::Buy, usd_limit_ref(100), "inst-1", 100),
-        place_order(None, OrderSide::Buy, TestOrderTypeRef::Market, "inst-1", 100)
+        place_order(
+            None,
+            OrderSide::Buy,
+            TestOrderTypeRef::Market,
+            "inst-1",
+            100
+        )
     );
 }
 
