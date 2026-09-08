@@ -10,7 +10,9 @@ mod lots;
 mod quantity;
 
 pub use account::{Account, AccountId, AccountName};
-pub use candlestick::{Candlestick, CandlestickId, CandlestickInterval};
+pub use candlestick::{
+    Candlestick, CandlestickDateTime, CandlestickId, CandlestickInstrument, CandlestickInterval,
+};
 pub use currency::{Currency, CurrencyCode, CurrencyId};
 pub use date_time::DateTime;
 pub use instrument::{Instrument, InstrumentId, InstrumentName, InstrumentTicker};
