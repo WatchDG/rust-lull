@@ -1,6 +1,8 @@
 mod order_id;
 mod order_instrument;
 mod order_size;
+mod order_state;
+mod order_status;
 mod order_type;
 mod order_type_limit;
 mod order_type_market;
@@ -11,13 +13,14 @@ use std::collections::HashSet;
 use lull_spec::enums::{CurrencyRef, InstrumentRef, OrderSide, OrderSizeRef, OrderTypeRef};
 use lull_spec::types::{
     CurrencyCode, InstrumentId, Money, MoneyCurrency, MoneyValue, Order, OrderId, OrderInstrument,
-    OrderSize, OrderType, OrderTypeLimit, OrderTypeMarket, Quantity,
+    OrderSize, OrderState, OrderStatus, OrderType, OrderTypeLimit, OrderTypeMarket, Quantity,
 };
 
 type TestCurrency = CurrencyRef<String, [u8; 3]>;
 type TestOrderTypeLimit = OrderTypeLimit<i64, TestCurrency>;
 type TestOrderTypeRef = OrderTypeRef<i64, TestCurrency>;
-type TestOrder<OT> = Order<String, OT, InstrumentRef<String>, OrderSizeRef<i64, i64>>;
+type TestOrder<OT> =
+    Order<String, OT, InstrumentRef<String>, OrderSizeRef<i64, i64>, String, String>;
 
 fn usd_limit(value: i64) -> TestOrderTypeLimit {
     OrderTypeLimit::new(Money::new(
@@ -37,6 +40,18 @@ fn order<OT>(
     instrument_id: &str,
     qty: i64,
 ) -> TestOrder<OT> {
+    order_with_lifecycle(id, side, order_type, instrument_id, qty, "new", "new")
+}
+
+fn order_with_lifecycle<OT>(
+    id: &str,
+    side: OrderSide,
+    order_type: OT,
+    instrument_id: &str,
+    qty: i64,
+    state: &str,
+    status: &str,
+) -> TestOrder<OT> {
     Order::new(
         OrderId::new(String::from(id)),
         side,
@@ -45,6 +60,8 @@ fn order<OT>(
             instrument_id,
         )))),
         OrderSize::new(OrderSizeRef::Quantity(Quantity::new(qty))),
+        OrderState::new(String::from(state)),
+        OrderStatus::new(String::from(status)),
     )
 }
 
@@ -127,6 +144,38 @@ fn distinct_sizes_are_not_equal_orders() {
 }
 
 #[test]
+fn distinct_states_are_not_equal_orders() {
+    assert_ne!(
+        order("ord-1", OrderSide::Buy, usd_limit_ref(100), "inst-1", 100),
+        order_with_lifecycle(
+            "ord-1",
+            OrderSide::Buy,
+            usd_limit_ref(100),
+            "inst-1",
+            100,
+            "pending",
+            "new"
+        )
+    );
+}
+
+#[test]
+fn distinct_statuses_are_not_equal_orders() {
+    assert_ne!(
+        order("ord-1", OrderSide::Buy, usd_limit_ref(100), "inst-1", 100),
+        order_with_lifecycle(
+            "ord-1",
+            OrderSide::Buy,
+            usd_limit_ref(100),
+            "inst-1",
+            100,
+            "new",
+            "fill"
+        )
+    );
+}
+
+#[test]
 fn clone_preserves_equality() {
     let order = order("ord-1", OrderSide::Buy, usd_limit_ref(100), "inst-1", 100);
     assert_eq!(order.clone(), order);
@@ -184,5 +233,23 @@ fn equal_orders_hash_to_the_same_bucket() {
         "inst-1",
         101,
     ));
-    assert_eq!(orders.len(), 6);
+    orders.insert(order_with_lifecycle(
+        "ord-1",
+        OrderSide::Buy,
+        usd_limit_ref(100),
+        "inst-1",
+        100,
+        "pending",
+        "new",
+    ));
+    orders.insert(order_with_lifecycle(
+        "ord-1",
+        OrderSide::Buy,
+        usd_limit_ref(100),
+        "inst-1",
+        100,
+        "new",
+        "fill",
+    ));
+    assert_eq!(orders.len(), 8);
 }

@@ -20,7 +20,7 @@ pub use instrument::{Instrument, InstrumentId, InstrumentName, InstrumentTicker}
 pub use lots::Lots;
 pub use money::{Money, MoneyCurrency, MoneyValue};
 pub use order::{
-    Order, OrderId, OrderInstrument, OrderSize, OrderType, OrderTypeLimit, OrderTypeMarket,
-    PlaceOrder,
+    Order, OrderId, OrderInstrument, OrderSize, OrderState, OrderStatus, OrderType, OrderTypeLimit,
+    OrderTypeMarket, PlaceOrder,
 };
 pub use quantity::Quantity;

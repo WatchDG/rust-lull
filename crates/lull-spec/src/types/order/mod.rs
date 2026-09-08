@@ -1,6 +1,8 @@
 mod order_id;
 mod order_instrument;
 mod order_size;
+mod order_state;
+mod order_status;
 mod order_type;
 mod order_type_limit;
 mod order_type_market;
@@ -8,6 +10,8 @@ mod order_type_market;
 pub use order_id::OrderId;
 pub use order_instrument::OrderInstrument;
 pub use order_size::OrderSize;
+pub use order_state::OrderState;
+pub use order_status::OrderStatus;
 pub use order_type::OrderType;
 pub use order_type_limit::OrderTypeLimit;
 pub use order_type_market::OrderTypeMarket;
@@ -15,21 +19,25 @@ pub use order_type_market::OrderTypeMarket;
 use crate::enums::OrderSide;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Order<OID, OT, OI, OS> {
+pub struct Order<OID, OT, OI, OS, OST, OSS> {
     pub id: OrderId<OID>,
     pub side: OrderSide,
     pub r#type: OrderType<OT>,
     pub instrument: OrderInstrument<OI>,
     pub size: OrderSize<OS>,
+    pub state: OrderState<OST>,
+    pub status: OrderStatus<OSS>,
 }
 
-impl<OID, OT, OI, OS> Order<OID, OT, OI, OS> {
+impl<OID, OT, OI, OS, OST, OSS> Order<OID, OT, OI, OS, OST, OSS> {
     pub fn new(
         id: OrderId<OID>,
         side: OrderSide,
         r#type: OrderType<OT>,
         instrument: OrderInstrument<OI>,
         size: OrderSize<OS>,
+        state: OrderState<OST>,
+        status: OrderStatus<OSS>,
     ) -> Self {
         Self {
             id,
@@ -37,6 +45,8 @@ impl<OID, OT, OI, OS> Order<OID, OT, OI, OS> {
             r#type,
             instrument,
             size,
+            state,
+            status,
         }
     }
 }
